@@ -12,3 +12,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+input, select {
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+}
+
+.form-label {
+  @apply block mb-2 text-sm font-medium
+}
+
+button.primary {
+  @apply text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center
+}

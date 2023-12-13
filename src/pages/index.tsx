@@ -1,8 +1,22 @@
 import { FormEvent, useState } from 'react';
 import Osila from '@/components/osila';
+import FormLabel from '@/components/formLabel';
 
 
 const API_URL = "http://localhost:8080/api/score";
+
+const EVENTS: { value: string; label: string; }[] = [
+  { value: "TRACK_100", label: "100 meters (s)" },
+  { value: "LONG_JUMP", label: "Long jump (cm)" },
+  { value: "SHOT_PUT", label: "Shot put (m)" },
+  { value: "HIGH_JUMP", label: "High jump (cm)" },
+  { value: "TRACK_400", label: "400 meters (s)" },
+  { value: "HURDLES_110", label: "110 hurdles (s)" },
+  { value: "DISCUS_THROW", label: "Discus throw (m)" },
+  { value: "POLE_VAULT", label: "Pole vault (cm)" },
+  { value: "JAVELIN_THROW", label: "Javelin throw (m)" },
+  { value: "TRACK_1500", label: "1500 meters (s)" },
+];
 
 
 export default function Home() {
@@ -14,29 +28,13 @@ export default function Home() {
 
   const [score, setScore] = useState<number>();
 
-  const events: { value: string; label: string; }[] = [
-    { value: "TRACK_100", label: "100 meters (s)" },
-    { value: "LONG_JUMP", label: "Long jump (cm)" },
-    { value: "SHOT_PUT", label: "Shot put (m)" },
-    { value: "HIGH_JUMP", label: "High jump (cm)" },
-    { value: "TRACK_400", label: "400 meters (s)" },
-    { value: "HURDLES_110", label: "110 hurdles (s)" },
-    { value: "DISCUS_THROW", label: "Discus throw (m)" },
-    { value: "POLE_VAULT", label: "Pole vault (cm)" },
-    { value: "JAVELIN_THROW", label: "Javelin throw (m)" },
-    { value: "TRACK_1500", label: "1500 meters (s)" },
-  ];
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     await fetch(`${API_URL}?event=${values.event}&result=${values.result}`, {
       method: "GET",
       mode: 'cors',
-      headers: {
-        "Content-Type": "application/json",
-
-      },
+      headers: { "Content-Type": "application/json", },
     }).then(response => {
       return response.json();
     }).then(data => {
@@ -44,21 +42,15 @@ export default function Home() {
     });
   }
 
-  const inputStyle = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5";
-
   return (
-    <main className="py-8 sm:p-24">
-      <div className="flex-1 flex-col max-w-sm mx-auto">
-        <h1 className="text-xl mb-4">Ask Osila</h1>
+    <main className="py-8">
+      <div className="flex flex-col space-y-14 p-8 max-w-sm mx-auto border-2">
         <form onSubmit={handleSubmit}>
+          <h1 className="text-xl mb-4">Ask Osila</h1>
           <div className="mb-5">
-            <label htmlFor="event" className="block mb-2 text-sm font-medium">Event</label>
-            <select
-              id="event"
-              className={inputStyle}
-              onChange={e => setValues(prev => ({ ...prev, event: e.target.value }))}
-            >
-              {events.map(event => {
+            <FormLabel htmlFor="event">Event</FormLabel>
+            <select id="event" onChange={e => setValues(prev => ({ ...prev, event: e.target.value }))}>
+              {EVENTS.map(event => {
                 return (
                   <option key={event.value} value={event.value}>
                     {event.label}
@@ -68,26 +60,24 @@ export default function Home() {
             </select>
           </div>
           <div className="mb-5">
-            <label htmlFor="result" className="block mb-2 text-sm font-medium">Result</label>
+            <FormLabel htmlFor="event">Result</FormLabel>
             <input
               id="result"
               type="number"
-              className={inputStyle} step={0.01}
+              step={0.01}
               required
               value={values.result}
               onChange={e => setValues(prev => ({ ...prev, result: e.target.value }))}
             />
           </div>
           <div>
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">
+            <button type="submit" className="primary">
               Ask
             </button>
           </div>
         </form>
-        <div className="p-4">
-          <Osila text={score?.toString()} />
+        <div className="px-8">
+        <Osila text={score?.toString()} />
         </div>
       </div>
     </main>

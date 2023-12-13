@@ -27,16 +27,10 @@ const Osila = (props: OsilaProps) => {
   const Bubble = useCallback(() => {
     return (
       <div
-        style={{
-          width: '150px',
-          height: '120px',
-          backgroundImage: `url('/speaking_bubble.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-        className="pt-6"
+        className="w-32 h-24 bg-cover bg-center"
+        style={{ backgroundImage: `url('/speaking_bubble.png')`, }} // doesn't work with tw
       >
-        <p className="text-2xl text-center font-bold px-11 py-3">
+        <p className="text-2xl text-center font-bold py-6">
           {text}
         </p>
       </div>
@@ -45,7 +39,7 @@ const Osila = (props: OsilaProps) => {
 
 
   return (
-    <div className="flex flex-row p-8">
+    <div className="flex flex-row">
       <Image
         src={isSpeaking ? "/osila_speaking.gif" : "/osila.png"}
         width={200}
